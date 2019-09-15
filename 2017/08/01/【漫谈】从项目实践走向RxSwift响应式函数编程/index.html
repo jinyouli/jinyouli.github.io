@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>【漫谈】从项目实践走向RxSwift响应式函数编程 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="article">
+<meta property="og:title" content="【漫谈】从项目实践走向RxSwift响应式函数编程">
+<meta property="og:url" content="http://yoursite.com/2017/08/01/【漫谈】从项目实践走向RxSwift响应式函数编程/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/977602-48ac34a811092840.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/977602-af67c9163a0a1ac9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/977602-6295373344e63fc2.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/977602-78e9f010b3126698.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-09-14T18:07:25.163Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【漫谈】从项目实践走向RxSwift响应式函数编程">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/977602-48ac34a811092840.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-【漫谈】从项目实践走向RxSwift响应式函数编程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/01/【漫谈】从项目实践走向RxSwift响应式函数编程/" class="article-date">
+  <time datetime="2017-08-01T03:44:18.000Z" itemprop="datePublished">2017-08-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      【漫谈】从项目实践走向RxSwift响应式函数编程
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://upload-images.jianshu.io/upload_images/977602-48ac34a811092840.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<a id="more"></a>
+<p>（一）万年不变的开端<br>去年大三还在学校的时候就听说过ReactiveCocoa<br>这一Github<br>开源的响应式重量级框架，可是对于当时还只埋头狂写OOP的我来说，大概只能用下面的话来形容自己吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">你对力量一无所知。</span><br></pre></td></tr></table></figure>
+
+<p>后来为了学习ReactiveCocoa<br>，看了几乎所有中文的资料以及博客，才感觉自己稍稍入门。相对于OOP，的确FRP<br>的学习成本高了很多，但是也绝对没有有些人说的那么夸张，可能就有那么一些人，会了一些国外玩了很久的技术，然后沾沾自喜地指着其他人，“看！我多么厉害，这么难的技术我都学会了！”,似乎只有这样才能体现他们卑微的优越感。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">闻道有先后。</span><br></pre></td></tr></table></figure>
+
+<p>我一直相信这句话。<br>在这里不去讨论FRP多么的优越，每一种技术栈都有自己的优劣势，学习FRP对我来说更多的是开拓自己的视野，扩展技能栈。在早期的创业项目中，过早的引入复杂的架构，“先进”的框架，我想更多的会是得不偿失吧。<br>（二）MVVM Pattern<br><img src="http://upload-images.jianshu.io/upload_images/977602-af67c9163a0a1ac9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt>MVVM.png</p>
+<p>其实移动端的技术一直慢于Web端，Web前端事件驱动，数据驱动已经晚了很多年了，而对于iOS平台来说RxSwift，ReSwift都是比较新的框架，但是他们都无一例外 Inspire By XXX。<br>从 MVC -&gt; MVVM，无非是每一个模块都更加的纯粹，给原来充斥着各种各样业务代码的控制器“瘦身”，ViewModel所提供给View的应该是可以直接展示或者可以直接根据状态来绑定的接口。<br>一般来说，经典的业务情况将是这样的：<br><img src="http://upload-images.jianshu.io/upload_images/977602-6295373344e63fc2.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt>经典业务逻辑.jpeg</p>
+<p>首先我们通过本地的网络层获取到服务器通信给我们的MetaData<br>，一般来说是JSON<br>或者XML<br>，然后通过客户端的解析（transform），构造出对应的Model，但是Model对象的值并不能直接展示给用户，所以我们需要对它做加工处理（Process）。例如，UserModel中性别通过Int<br>类型的1,2<br>来区分，于是我们通过本地的逻辑代码，将其转化成字符串类型的男，女<br>,而这些最后的字符串类型的数据就是ViewModel<br>所暴露出来的数据，View<br>层就可以通过ViewModel<br>所暴露出来的数据绑定现实了。<br>（三）MVVM 实践 Demo：Gank.io客户端<br>1.初窥<br>首先感谢代码家<br>倾情提供的api,当你想通过实际项目来提升自己的时候，别犹豫，先用这个api来撸一个gank客户端吧！<br>这个gank客户端的首页大概是这样子的。<br><img src="http://upload-images.jianshu.io/upload_images/977602-78e9f010b3126698.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt>Simulator Screen Shot 2017年2月24日 上午2.24.10.png</p>
+<p>2.关于ViewModel<br>一个好的ViewModel是怎么样的 ?</p>
+<p><a href="https://github.com/devxoul" target="_blank" rel="noopener">devxoul</a>在<a href="https://github.com/devxoul/RxTodo" target="_blank" rel="noopener">RxTodo</a>的Readme中所写的关于ViewModel的哲学，我深以为然：<br>View 不应该存在逻辑控制流的逻辑，View 不应该对数据造成操作，View 只能绑定数据，控制显示。<br><strong>Bad</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">viewModel.titleLabelText </span><br><span class="line">.map &#123; $0 + &quot;!&quot; &#125; // Bad: View 不应该有修改数据的操作 </span><br><span class="line">.bindTo(self.titleLabel)</span><br></pre></td></tr></table></figure>
+
+<p><strong>Good</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">viewModel.titleLabelText </span><br><span class="line">.bindTo(self.titleLabel.rx.text)</span><br></pre></td></tr></table></figure>
+
+<p>View 并不知道 ViewModel具体做了什么,View 只能通过ViewModel知道需要View做什么.<br><strong>Bad</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">viewModel.login() // Bad: View不应该知道ViewModel的具体动作</span><br></pre></td></tr></table></figure>
+
+<p><strong>Good</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">self.loginButton.rx.tap </span><br><span class="line">.bindTo(viewModel.loginButtonDidTap) </span><br><span class="line"></span><br><span class="line">self.usernameInput.rx.controlEvent(.editingDidEndOnExit) </span><br><span class="line">.bindTo(viewModel.usernameInputDidReturn) // &quot;Hey I tapped the return on username input&quot;</span><br></pre></td></tr></table></figure>
+
+<p>Model 应当被ViewModel所隐藏，ViewModel只暴露出View渲染所需要的最少信息。<br><strong>Bad</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">struct ProductViewModel &#123; </span><br><span class="line">let product: Driver&lt;Product&gt; // Bad: Model不应该暴露给View，也不需要暴露给View. </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Good</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct ProductViewModel &#123; </span><br><span class="line">let productName: Driver&lt;String&gt; </span><br><span class="line">let formattedPrice: Driver&lt;String&gt; </span><br><span class="line">let formattedOriginalPrice: Driver&lt;String&gt; </span><br><span class="line">let isOriginalPriceHidden: Driver&lt;Bool&gt; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>个人在实践的时候也是完全遵从这几个原则的，最主要的好处是，这样的代码结构使得App层次分明，实践在RxSwift上面大概是这样的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//告诉View当前的分类（iOS，android，后端等等...） </span><br><span class="line">let category = Variable&lt;Int&gt;(0) </span><br><span class="line">// RxDataSources所需要的数据模型，用于优雅的绑定</span><br><span class="line">TableView let section: Driver&lt;[HomeSection]&gt; </span><br><span class="line">// 首页的刷新命令，入参是当前的分类 </span><br><span class="line">let refreshCommand = PublishSubject&lt;Int&gt;() </span><br><span class="line">// 刷新当前的页面，和下拉操作一起绑定</span><br><span class="line">let refreshTrigger = PublishSubject&lt;Void&gt;()</span><br><span class="line"> // RxDataSource的核心类 </span><br><span class="line">let dataSource = RxTableViewSectionedReloadDataSource&lt;HomeSection&gt;() </span><br><span class="line">// 被隐藏起来的Model fileprivate </span><br><span class="line">let bricks = Variable&lt;[Brick]&gt;([])</span><br></pre></td></tr></table></figure>
+
+<p>在ViewModel的构造方法中，初始化相关的变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">override init() &#123; </span><br><span class="line">section = bricks.asObservable().map(&#123; (bricks) -&gt; [HomeSection] in </span><br><span class="line">   return [HomeSection(items: bricks)] </span><br><span class="line">&#125;) </span><br><span class="line">.asDriver(onErrorJustReturn: []) </span><br><span class="line"></span><br><span class="line">super.init() </span><br><span class="line"></span><br><span class="line">refreshCommand </span><br><span class="line">   .flatMapLatest &#123; gankApi.request(.data(type: GankAPI.GankCategory.mapCategory(with: $0), size: 20, index: 0)) &#125; </span><br><span class="line">   .subscribe(&#123; [weak self] (event) in </span><br><span class="line">    self?.refreshTrigger.onNext() </span><br><span class="line">    switch event &#123; </span><br><span class="line">    case let .next(response): </span><br><span class="line">do &#123; </span><br><span class="line">let data = try response.mapArray(Brick.self) </span><br><span class="line">self?.bricks.value = data </span><br><span class="line">&#125;catch &#123; </span><br><span class="line">self?.bricks.value = [] </span><br><span class="line">&#125; break </span><br><span class="line">case let .error(error): </span><br><span class="line">self?.refreshTrigger.onError(error); </span><br><span class="line">break </span><br><span class="line">default: </span><br><span class="line">break </span><br><span class="line">&#125; </span><br><span class="line">&#125;) </span><br><span class="line">.addDisposableTo(rx_disposeBag) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里，我们Gank客户端的ViewModel就算是构建完成了，遵守前面说到的设计哲学，ViewModel还是很好构建的。<br>Binding<br>最后的一步就是将ViewModel中暴露出来的绑定给View（控制器或者是View），在RxSwift的世界中，绑定的操作是通过链式的方法调用来玩成的。值得一说的是，在“竞争对手”ReactiveSwift中，大多数的绑定都可以通过自定义的操作符&lt;~<br>来实现，不得不说，貌似在这方面，ReactiveSwift更加全面的利用了Swift的语言特性，看起来也更加装逼了呢。回到这个Gank项目，Controller层面大概是这样的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">do /** Rx Config */ &#123;</span><br><span class="line"> </span><br><span class="line">        // Input</span><br><span class="line"> </span><br><span class="line">        tableView.refreshControl?.rx.controlEvent(.allEvents)</span><br><span class="line">            .flatMap(&#123; self.homeVM.category.asObservable() &#125;)</span><br><span class="line">            .bindTo(homeVM.refreshCommand)</span><br><span class="line">            .addDisposableTo(rx_disposeBag)</span><br><span class="line"> </span><br><span class="line">        NotificationCenter.default.rx.notification(Notification.Name.category)</span><br><span class="line">            .map(&#123; (notification) -&gt; Int in</span><br><span class="line">                let indexPath = (notification.object as? IndexPath) ?? IndexPath(item: 0, section: 0)</span><br><span class="line">                return indexPath.row</span><br><span class="line">            &#125;)</span><br><span class="line">            .bindTo(homeVM.category)</span><br><span class="line">            .addDisposableTo(rx_disposeBag)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">        NotificationCenter.default.rx.notification(Notification.Name.category)</span><br><span class="line">            .map(&#123; (notification) -&gt; Int in</span><br><span class="line">                let indexPath = (notification.object as? IndexPath) ?? IndexPath(item: 0, section: 0)</span><br><span class="line">                return indexPath.row</span><br><span class="line">            &#125;)</span><br><span class="line">            .observeOn(MainScheduler.asyncInstance)</span><br><span class="line">            .do(onNext: &#123; (idx) in</span><br><span class="line">                SideMenuManager.menuLeftNavigationController?.dismiss(animated: true, completion: &#123;</span><br><span class="line">                    DispatchQueue.main.async(execute: &#123; </span><br><span class="line">                        self.tableView.refreshControl?.beginRefreshing()</span><br><span class="line">                    &#125;)</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;, onError: nil, onCompleted: nil, onSubscribe:nil,onDispose: nil)</span><br><span class="line">            .bindTo(homeVM.refreshCommand)</span><br><span class="line">            .addDisposableTo(rx_disposeBag)</span><br><span class="line"> </span><br><span class="line">        // Output</span><br><span class="line"> </span><br><span class="line">        homeVM.section</span><br><span class="line">            .drive(tableView.rx.items(dataSource: homeVM.dataSource))</span><br><span class="line">            .addDisposableTo(rx_disposeBag)</span><br><span class="line"> </span><br><span class="line">        tableView.rx.setDelegate(self)</span><br><span class="line">            .addDisposableTo(rx_disposeBag)</span><br><span class="line"> </span><br><span class="line">        homeVM.refreshTrigger</span><br><span class="line">            .observeOn(MainScheduler.instance)</span><br><span class="line">            .subscribe &#123; [unowned self] (event) in</span><br><span class="line">                self.tableView.refreshControl?.endRefreshing()</span><br><span class="line">                switch event &#123;</span><br><span class="line">                case .error(_):</span><br><span class="line">                    NoticeBar(title: &quot;Network Disconnect!&quot;, defaultType: .error).show(duration: 2.0, completed: nil)</span><br><span class="line">                    break</span><br><span class="line">                case .next(_):</span><br><span class="line">                    self.tableView.reloadData()</span><br><span class="line">                    break</span><br><span class="line">                default:</span><br><span class="line">                    break</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            .addDisposableTo(rx_disposeBag)</span><br><span class="line"> </span><br><span class="line">        // Configure</span><br><span class="line"> </span><br><span class="line">        homeVM.dataSource.configureCell = &#123; dataSource, tableView, indexPath, item in</span><br><span class="line">            let cell = tableView.dequeueReusableCell(for: indexPath, cellType: HomeTableViewCell.self)</span><br><span class="line">            cell.gankTitle?.text = item.desc</span><br><span class="line">            cell.gankAuthor.text = item.who</span><br><span class="line">            cell.gankTime.text = item.publishedAt.toString(format: &quot;YYYY/MM/DD&quot;)</span><br><span class="line">            return cell</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>2.强大的RxSwift社区开源组件<br>在Github上的<a href="https://github.com/RxSwiftCommunity" target="_blank" rel="noopener">RxSwift Community</a>项目列表中，我们可以看到大量的一系列RxSwift拓展，并且任然还有大量的开发者为其添砖加瓦，在这里我们可以看到一个朝气蓬勃的社区。<br>在这里列举一些比较常用的扩展组件，如果想了解更多的组件，可以点击上文的链接关注他们。<br>(1).<a href="https://github.com/RxSwiftCommunity/Action" target="_blank" rel="noopener"> Action</a><br>使用过ReactiveCocoa的人一定不会对RACCommand陌生，RACCommand是一个将用户的操作封装起来的组件。它所发射的信号是一个二阶信号，即发射的信号的值是一个信号。在RxSwift的世界里，Action就充当了类似的功能。<br>(2). <strong><a href="https://github.com/RxSwiftCommunity/NSObject-Rx" target="_blank" rel="noopener">NSObject-Rx</a></strong><br><strong>NSObject-Rx</strong>，在我看来这个扩展对于RxSwift开发者来说是最简单同时也是必备的，为了合理的内存管理，我们总要写上这样的代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class MyObject: Whatever &#123;</span><br><span class="line">    let disposeBag = DisposeBag()</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后重复…重复…再重复的这样写，本来使用RxSwift如此优雅的FRP，着实被这个DisposeBag给煞了风景。但是当引用了NSObject-Rx<br>之后，通过Swift Extension<br>的方式，虽然还是需要显示的加上DisposeBag，但是已经相比之前优雅太多。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">thing</span><br><span class="line">  .bindTo(otherThing)</span><br><span class="line">  .addDisposableTo(rx_disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>(3).<strong><a href="https://github.com/RxSwiftCommunity/RxDataSources" target="_blank" rel="noopener">RxDataSources</a></strong><br>讲道理，RxDataSources也是我们在开发 RxApp 时候的标配。如果你用了RxSwift，然后还在那里傻傻的写着TableView的Delegate，那我觉得不如回家养猪，还写啥Swift ？通过RxDataSources我们可以很完美的将VM和View绑定起来，做到优雅的分层处理和数据驱动。我们可以来看看我在Gank客户端中RxDataSources的示例用法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/// 首先需要构建一个Section模型，遵守</span><br><span class="line">struct HomeSection &#123;</span><br><span class="line"> </span><br><span class="line">    var items: [Item]</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">extension HomeSection: SectionModelType &#123;</span><br><span class="line"> </span><br><span class="line">    typealias Item = Brick</span><br><span class="line"> </span><br><span class="line">    init(original: HomeSection, items: [HomeSection.Item]) &#123;</span><br><span class="line">        self = original</span><br><span class="line">        self.items = items</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后我们需要一个DataSource的示例驱动对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/// 使用之前我们构造的HomeSection</span><br><span class="line">    let dataSource = RxTableViewSectionedReloadDataSource()</span><br></pre></td></tr></table></figure>
+
+<p>最后我们只需要将ViewModel中的数据模型通过RxDataSource与TableView或者CollectionView绑定即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// Binding with Section Model and UITableView    </span><br><span class="line">    homeVM.section</span><br><span class="line">        .drive(tableView.rx.items(dataSource: homeVM.dataSource))</span><br><span class="line">        .addDisposableTo(rx_disposeBag)</span><br></pre></td></tr></table></figure>
+
+<p>完美，忘掉那些一大推的系统原生Delegate吧…</p>
+<p>结语<br>我们可以看到，RxSwift有一个非常活跃和富有创造性的社区，为优雅的使用Rx提供了一系列的组件，虽然RxSwift上手需要一点点的功夫，但是这些一系列的组件又为我们降低了门槛。从Star数来看，似乎使用的人还不是很多，笔者在这里的建议就是:   赶快上车RxSwift。</p>
+<p>RxSwift + MVVM + Services + Routing + Moya ，这是笔者比较喜欢的架构方式，本片文章更多的是介绍性质，很多东西都是一略而过，并没有什么太多的技术含量，只是希望更多的人了解未来，面向未来，向未来前进。</p>
+<p>这个是本文的Demo地址，仅供参考<a href="https://github.com/Maru-zhang/Gank" target="_blank" rel="noopener">Gank客户端</a>。</p>
+<p>（EOF）参考文章<br><a href="http://www.infoq.com/cn/articles/rethinking-mvc-mvvm" target="_blank" rel="noopener">被误解的MVC和被神化的MVVM</a><br><a href="https://realm.io/cn/news/mobilization-lukasz-mroz-mvvm-coordinators-rxswift/" target="_blank" rel="noopener">Coordinator 与 RxSwift 共同构建的 MVVM 架构</a><br><a href="https://blog.coding.net/blog/ios-architecture-patterns" target="_blank" rel="noopener">iOS 架构模式 - 简述 MVC, MVP, MVVM 和 VIPER</a><br><a href="http://blog.leichunfeng.com/blog/2016/02/27/mvvm-with-reactivecocoa/" target="_blank" rel="noopener">MVVM With ReactiveCocoa</a></p>
+<p>链接：<a href="http://www.jianshu.com/p/de7e90e1c13d" target="_blank" rel="noopener">http://www.jianshu.com/p/de7e90e1c13d</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2017/08/01/【漫谈】从项目实践走向RxSwift响应式函数编程/" data-id="ck0kdx1yk0011d4uuytvjep7b" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/03/iOS堪称“神器”的APP/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          iOS堪称“神器”的APP
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/31/Unity游戏开发视频教程目录-v17-3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Unity游戏开发视频教程目录 v17.3 </div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Markdown指南/">Markdown指南</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS逆向工程/">iOS逆向工程</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/搬瓦工/">搬瓦工</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Markdown指南/" style="font-size: 10px;">Markdown指南</a> <a href="/tags/iOS逆向工程/" style="font-size: 20px;">iOS逆向工程</a> <a href="/tags/搬瓦工/" style="font-size: 10px;">搬瓦工</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/">September 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">June 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/12/13/无论是第一批90后还是年轻人-为何都感叹自己老了/">无论是第一批90后还是年轻人 为何都感叹自己老了</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/07/最好用的开源Web漏扫工具梳理/">最好用的开源Web漏扫工具梳理</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/07/7800元在美国官网购买256G-iPhone-X的经历/">7800元在美国官网购买256G iPhone X的经历</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/24/iOS中最值得设计师学习的33个APP图标/">iOS中最值得设计师学习的33个APP图标</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/16/“高考零分生”的中场战事/">“高考零分生”的中场战事</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
